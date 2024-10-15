@@ -56,11 +56,75 @@ class LinkedList
     return auxNode
   end
 
-  def contains?(value, actPtr = @head)
-    return false if self.empty? || actPtr.nil?
-    return true if actPtr.value == value
+  def contains?(value)
+    return false if find(value).nil?
+    
+    true
+  end
 
-    contains?(value, actPtr.nextNode)
+  def find(value, actPtr = @head)
+    return nil if self.empty? || actPtr.nil?
+    return actPtr if actPtr.value == value
+  
+    find(value, actPtr.nextNode)  
+  end
+
+  def to_s(actPtr = @head)
+    return '|' if actPtr.nil?
+
+    return "#{actPtr.value} - #{to_s(actPtr.nextNode)}"
+  end
+
+  def insert_at(value, pos)
+    return false unless index <= @size
+    return false unless self.empty?
+    
+    if pos == 0
+      prepend(value)
+      return true
+    end
+    
+    if pos == @size - 1
+      eppend(value)
+      return true
+    end
+
+    return false if self.contains?(value)
+
+    auxNode = @head
+
+    for i in (0...pos)
+      auxNode = auxNode.nextNode
+    end
+    
+    newNode = Node.newNode(value)
+    newNode.nextNode auxNode.nextNode
+    newNode.lastNode = auxNode
+    auxNode.nextNode = newNode
+
+    true
+  end
+
+  def remove_at(value, pos)
+    return false unless index <= @size
+    return false unless self.empty?
+    
+    if pos == @size - 1
+      pop(value)
+      return true
+    end
+
+    return false if self.contains?(value)
+
+    auxNode = @head
+
+    for i in (0...pos)
+      auxNode = auxNode.nextNode
+    end
+
+    auxNode = auxNode.lastNode
+    auxNode.nextNode = auxNode.nextNode.nextNode
+    true
   end
 
   def Size

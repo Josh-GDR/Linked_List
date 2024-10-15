@@ -27,3 +27,5 @@ puts '|---  ELEMENTS ---|'
 for i in (0...list.size)
   puts "#{i} : #{list.at(i).value}"
 end
+
+puts "|--- TO STRING ---|\n#{list.to_s}"
